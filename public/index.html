@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Sign in | WorkHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <section id="welcomePage" class="card" aria-labelledby="welcomeTitle">
+        <div class="logo" aria-hidden="true">
+            <img src="../image/googleicon.png" alt="Google" width="40" height="40" />
+        </div>
+        <h1 id="welcomeTitle">Welcome to Google</h1>
+        <p class="sub"></p>
+        <div
+          id="sliderTrack"
+          class="slider"
+          role="group"
+          aria-label="Slide to continue"
+        >
+          <span id="sliderHint" class="slider-hint">Slide to continue</span>
+          <button
+            id="sliderHandle"
+            type="button"
+            class="handle"
+            aria-label="Drag right to continue"
+          ></button>
+        </div>
+        <div class="actions">
+          <button id="continueWithoutDragging" type="button" class="link">
+            Continue without dragging
+          </button>
+        </div>
+        <p id="welcomeMessage" class="msg" aria-live="polite"></p>
+      </section>
+
+      <section id="emailPage" class="card hidden" aria-labelledby="emailTitle">
+        <div class="logo" aria-hidden="true">
+            <img src="../image/googleicon.png" alt="Google" width="40" height="40" />
+        </div>
+        <h1 id="emailTitle">Sign in</h1>
+        <p class="sub">to continue to Google</p>
+        <form id="emailForm" novalidate>
+          <div class="field">
+            <input
+              id="emailInput"
+              type="email"
+              placeholder=" "
+              autocomplete="email"
+              maxlength="254"
+              required
+            /><label for="emailInput">Email address</label>
+          </div>
+          <p id="emailMessage" class="msg" aria-live="polite"></p>
+          <button id="forgotEmail" type="button" class="link pad">
+            Forgot email?
+          </button>
+          <div class="actions">
+            <button type="button" class="link" data-go="registerPage">
+              Create account
+            </button>
+            <button type="submit" class="btn">Next</button>
+          </div>
+        </form>
+      </section>
+
+      <section
+        id="passwordPage"
+        class="card hidden"
+        aria-labelledby="passwordTitle"
+      >
+        <div class="logo" aria-hidden="true">
+            <img src="../image/googleicon.png" alt="Google" width="40" height="40" />
+        </div>
+        <h1 id="passwordTitle">Welcome</h1>
+        <button
+          id="changeEmail"
+          type="button"
+          class="chip"
+          aria-label="Use a different account"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              fill="none"
+              stroke="#444746"
+              stroke-width="1.6"
+            />
+            <circle cx="12" cy="9.5" r="3.2" fill="#444746" />
+            <path
+              d="M5.8 18.2c1.4-2.4 3.5-3.4 6.2-3.4s4.8 1 6.2 3.4"
+              fill="#444746"
+            />
+          </svg>
+          <span id="selectedEmail"></span>
+          <svg width="10" height="5" viewBox="0 0 10 5" aria-hidden="true">
+            <path d="M0 0h10L5 5z" fill="#444746" />
+          </svg>
+        </button>
+        <form id="loginForm" novalidate>
+          <div class="field tall">
+            <input
+              id="loginPassword"
+              type="password"
+              placeholder=" "
+              autocomplete="current-password"
+              maxlength="128"
+              required
+            /><label for="loginPassword">Enter your password</label>
+          </div>
+          <p id="loginMessage" class="msg" aria-live="polite"></p>
+          <div class="showpw">
+            <input id="showPassword" type="checkbox" /><label for="showPassword"
+              >Show password</label
+            >
+          </div>
+          <div class="actions">
+            <button id="forgotPassword" type="button" class="link">
+              Forgot password?
+            </button>
+            <button type="submit" class="btn">Next</button>
+          </div>
+        </form>
+      </section>
+
+      <section
+        id="registerPage"
+        class="card hidden"
+        aria-labelledby="registerTitle"
+      >
+        <div class="logo" aria-hidden="true">
+          <img src="../image/googleicon.png" alt="Google" width="40" height="40" />
+        </div>
+        <h1 id="registerTitle">Create account</h1>
+        <p class="sub">Enter your work email to get started with WorkHub</p>
+        <form id="registerForm" novalidate>
+          <div class="field">
+            <input
+              id="registerEmail"
+              type="email"
+              placeholder=" "
+              autocomplete="email"
+              maxlength="254"
+              required
+            /><label for="registerEmail">email address</label>
+          </div>
+          <p id="registerMessage" class="msg" aria-live="polite"></p>
+          <div class="actions">
+            <button type="button" class="link" data-go="emailPage">
+              Sign in instead
+            </button>
+            <button type="submit" class="btn">Next</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <select aria-label="Language">
+        <option>English (United States)</option>
+        <option>English (United Kingdom)</option>
+        <option>Français</option>
+        <option>Español</option>
+      </select>
+      <div class="flinks">
+        <a href="#help" id="helpLink">Help</a
+        ><a href="#privacy" id="privacyLink">Privacy</a
+        ><a href="#terms" id="termsLink">Terms</a
+        ><a href="#cookies" id="cookiesLink">Cookies</a>
+      </div>
+    </footer>
+
+    <div
+      id="cookieBanner"
+      class="cookie hidden"
+      role="dialog"
+      aria-labelledby="cookieTitle"
+      aria-describedby="cookieText"
+    >
+      <p id="cookieText">
+        <strong id="cookieTitle">This website uses cookies</strong>Google uses
+        cookies to keep you signed in, remember your preferences and understand
+        how the site is used. You can accept all cookies or reject the
+        non-essential ones.
+        <button type="button" id="cookiePolicy" class="link">
+          Cookie policy
+        </button>
+      </p>
+      <div class="cookie-actions">
+        <button type="button" id="cookieReject" class="btn outline">
+          Reject non-essential
+        </button>
+        <button type="button" id="cookieAccept" class="btn">Accept all</button>
+      </div>
+    </div>
+
+<section id="thankYouPage" class="page hidden">
+  <div class="thank-you-card">
+    <h1>Thank You!</h1>
+    <p>Your request has been received.</p>
+    <p>You will be contacted if further action is needed.</p>
+  </div>
+</section>
+
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
