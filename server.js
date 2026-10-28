@@ -1,34 +1,57 @@
-const dns = require("node:dns");
-dns.setServers(["8.8.8.8", "1.1.1.1"]);
+if (process.env.NODE_ENV !== "production") {
+  const dns = require("node:dns");
+  dns.setServers(["8.8.8.8", "1.1.1.1"]);
+}
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const validator = require("validator");
-
 const path = require("node:path");
 
 const app = express();
 
-// Serve the WorkHub frontend from the public folder
 app.use(express.static(path.join(__dirname, "public")));
-
 app.use(express.json());
 app.use(cors());
 
-// ---------- Database ----------
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log("Mongo error:", err));
+// ---------- Database (cached for serverless) ----------
+let cached = global._mongoose || (global._mongoose = { conn: null, promise: null });
+
+async function connectDB() {
+  if (cached.conn) return cached.conn;
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(process.env.MONGODB_URI, {
+      bufferCommands: false,
+    });
+  }
+  try {
+    cached.conn = await cached.promise;
+    console.log("MongoDB connected");
+  } catch (e) {
+    cached.promise = null;
+    throw e;
+  }
+  return cached.conn;
+}
+
+app.use("/api", async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (e) {
+    console.log("Mongo error:", e);
+    res.status(500).json({ message: "Database connection failed" });
+  }
+});
 
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true }, // stores the bcrypt hash only
+  password: { type: String, required: true },
 });
-const User = mongoose.model("User", userSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
-// ---------- LOGIN (creates the user on first login) ----------
+// ---------- LOGIN ----------
 app.post("/api/login", async (req, res) => {
   try {
     let { email, password } = req.body;
@@ -51,11 +74,11 @@ app.post("/api/login", async (req, res) => {
         .json({ message: "Password must be at least 8 characters" });
     }
 
-   let user = await User.findOne({ email });
+    let user = await User.findOne({ email });
 
-if (!user) {
-  user = await User.create({ email, password });
-}
+    if (!user) {
+      user = await User.create({ email, password });
+    }
 
     res.json({ message: "Logged in", email: user.email });
   } catch (error) {
@@ -64,4 +87,9 @@ if (!user) {
   }
 });
 
-app.listen(5000, () => console.log("Server running on port 5000"));
+if (require.main === module) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
+
+module.exports = app;

@@ -37,7 +37,7 @@ const pages = [
 
   // The frontend and API should use the same origin.
   // Open WorkHub through your Express server, not VS Code Live Server.
-  const API_BASE = "http://localhost:5000";
+  const API_BASE = "";
 
   // -------------------- Messages --------------------
 
@@ -88,7 +88,7 @@ const pages = [
     let response;
 
     try {
-  response = await fetch(`${API_BASE}/api/login`, {
+ response = await fetch(`${API_BASE}${path}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
